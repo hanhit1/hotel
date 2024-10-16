@@ -1,4 +1,3 @@
-const e = require('express');
 const sequelize = require('../config/database');
 const { Sequelize } = require('sequelize');
 const Role = sequelize.define('roles', {
