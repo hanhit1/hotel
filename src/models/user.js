@@ -12,11 +12,11 @@ const User = sequelize.define('users', {
     },
     phone: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     address: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     email: {
         type: Sequelize.STRING,
@@ -24,11 +24,11 @@ const User = sequelize.define('users', {
     },
     password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     role_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 });
 User.sync();

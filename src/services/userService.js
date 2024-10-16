@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Role = require('../models/role');
+const e = require('express');
 exports.getUserWithRoleName = async (userId) => {
     try {
         const user = await User.findOne({ where: { user_id: userId } });
@@ -80,5 +81,25 @@ exports.deleteAdmin = async (userId) => {
     } catch (error) {
         console.error('Error deleting admin:', error);
         return { message: 'Error deleting admin' };
+    }
+}
+exports.getUserByEmail = async (email) => { 
+    try {
+        const user = await User.findOne({ where: { email: email } });
+        return user;
+    }
+    catch (error) {
+        console.error('Error fetching user by email:', error);
+        return { message: 'Error fetching user by email' };
+    }
+};
+exports.createUser = async (user) => { 
+    try {
+        const newUser = await User.create(user);
+        return newUser;
+    }
+    catch (error) {
+        console.error('Error creating user:', error);
+        return { message: 'Error creating user' };
     }
 }
