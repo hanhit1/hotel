@@ -1,7 +1,7 @@
 const userService = require('../services/userService.js');
 const checkRole = (requiredRoles) => {
     return async (req, res, next) => {
-      const userId = req.user.id; 
+      const userId = req.headers['id']; 
   const user = await userService.getUserWithRoleName(userId);
   console.log(user);
   console.log(requiredRoles);

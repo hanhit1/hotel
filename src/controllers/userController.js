@@ -10,11 +10,12 @@ exports.getAdmin = async (req, res) => {
 }
 exports.updateAdmin = async (req, res) => {
     try {
-        const user = await userService.updateAdmin(req.params.id, req.body);
-        if (user) {
-            res.status(200).json(user);
+        const id = req.params.id
+        const admin = await userService.updateAdmin(id, req.body);
+        if (admin) {
+            res.status(200).json(admin);
         } else {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ message: 'admin not found' });
         }
     } catch (error) {
         console.error('Error updating admin:', error);
@@ -23,11 +24,11 @@ exports.updateAdmin = async (req, res) => {
 };
 exports.deleteAdmin = async (req, res) => {
     try {
-        const user = await userService.deleteAdmin(req.params.id);
-        if (user) {
-            res.status(200).json(user);
+        const admin = await userService.deleteAdmin(req.params.id);
+        if (admin) {
+            res.status(200).json(admin);
         } else {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ message: 'admin not found' });
         }
     } catch (error) {
         console.error('Error deleting admin:', error);

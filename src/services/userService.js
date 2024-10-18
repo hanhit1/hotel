@@ -13,7 +13,7 @@ exports.getUserWithRoleName = async (userId) => {
                     phone: user.phone,
                     address: user.address,
                     email: user.email,
-                    role: role.role_name 
+                    role: role.role_name
                 };
             } else {
                 return { message: 'Role not found' };
@@ -30,8 +30,8 @@ exports.getAdmin = async () => {
     try {
         const role = await Role.findOne({ where: { role_name: 'Admin' } });
         if (role) {
-            const users = await User.findAll({ where: { role_id: role.role_id } });
-            return users;
+            const admins = await User.findAll({ where: { role_id: role.role_id } });
+            return admins;
         } else {
             return { message: 'Role not found' };
         }
@@ -42,48 +42,33 @@ exports.getAdmin = async () => {
 }
 exports.updateAdmin = async (userId, user) => {
     try {
-        const userToUpdate = await User.findOne({ where: { user_id: userId } });
-        if (userToUpdate) {
-            const role = await Role.findOne({ where: { role_name: 'Admin' } });
-            if (role) {
-                user.role_id = role.role_id;
-                await userToUpdate.update(user);
-                return userToUpdate;
-            } else {
-                return { message: 'Role not found' };
-            }
-        } else {
-            return { message: 'User not found' };
+        const updated = await User.update(user, {
+            where: { user_id: userId }
+        });
+        if (updated) {
+            const updatedUser = await User.findOne({ where: { user_id: userId } });
+            return updatedUser;
         }
+        return { message: 'Admin not found' };
     } catch (error) {
         console.error('Error updating admin:', error);
-        return { message: 'Error updating admin' };
+        throw error
     }
 }
 exports.deleteAdmin = async (userId) => {
     try {
-        const userToDelete = await User.findOne({ where: { user_id: userId } });
-        if (userToDelete) {
-            const role = await Role.findOne({ where: { role_name: 'Admin' } });
-            if (role) {
-                if (userToDelete.role_id === role.role_id) {
-                    await userToDelete.destroy();
-                    return userToDelete;
-                } else {
-                    return { message: 'User is not an admin' };
-                }
-            } else {
-                return { message: 'Role not found' };
-            }
+        const adminToDelete = await User.findOne({ where: { user_id: userId } });
+        if (adminToDelete) {
+            await adminToDelete.destroy();
+            return adminToDelete;
         } else {
-            return { message: 'User not found' };
+            return { message: 'User is not an admin' };
         }
     } catch (error) {
-        console.error('Error deleting admin:', error);
         return { message: 'Error deleting admin' };
     }
 }
-exports.getUserByEmail = async (email) => { 
+exports.getUserByEmail = async (email) => {
     try {
         const user = await User.findOne({ where: { email: email } });
         return user;
@@ -93,7 +78,7 @@ exports.getUserByEmail = async (email) => {
         return { message: 'Error fetching user by email' };
     }
 };
-exports.createUser = async (user) => { 
+exports.createUser = async (user) => {
     try {
         const newUser = await User.create(user);
         return newUser;

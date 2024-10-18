@@ -1,4 +1,5 @@
 const hotelService = require('../services/hotelService.js');
+const client = require('redis');
 exports.getAllHotel = async (req, res) => {
     try {
         const hotels = await hotelService.getAllHotel();
@@ -10,11 +11,19 @@ exports.getAllHotel = async (req, res) => {
 };
 exports.getHotelById = async (req, res) => {
     try {
-        const hotel = await hotelService.getHotelById(req.params.id);
-        if (hotel) {
-            res.status(200).json(hotel);
-        } else {
-            res.status(404).json({ message: 'Hotel not found' });
+        const hotel_id = req.params.id;
+        const cacheData = client.get(`hotel:${hotel_id}`)
+        if (cacheData) {
+            return res.json(JSON.parse(cacheData));
+        }
+        else {
+            const hotel = await hotelService.getHotelById();
+            if (hotel) {
+                client.setex(`hotel:${hotel_id}`, 3600, JSON.stringify(hotelData));
+                res.status(200).json(hotel);
+            } else {
+                res.status(404).json({ message: 'Hotel not found' });
+            }
         }
     } catch (error) {
         console.error('Error getting hotel:', error);
@@ -25,6 +34,8 @@ exports.updateHotel = async (req, res) => {
     try {
         const hotel = await hotelService.updateHotel(req.params.id, req.body);
         if (hotel) {
+            client.del(`hotel:${req.params.id}`);
+            client.setex(`hotel:${req.params.id}`, 3600, JSON.stringify(hotelData));
             res.status(200).json(hotel);
         } else {
             res.status(404).json({ message: 'Hotel not found' });

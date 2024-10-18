@@ -1,0 +1,7 @@
+{
+    "error": {
+        "not_found": "Tài nguyên không tìm thấy.",
+        "invalid_input": "Dữ liệu đầu vào không hợp lệ.",
+        "unauthorized": "Bạn không có quyền truy cập."
+    }
+}

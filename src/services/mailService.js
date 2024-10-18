@@ -17,6 +17,7 @@ const sendMail = (to, subject, name) => {
         subject: subject,
         html: generateEmailTemplate(name)
     }
+    
     return transporter.sendMail(mailOptions);
 }
 module.exports = sendMail;
