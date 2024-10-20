@@ -21,6 +21,7 @@ exports.getFile = (req, res) => {
         const filePath = path.join(__dirname, '../public/', fileName);
         fs.access(filePath, fs.constants.F_OK, (err) => {
             if (err) {
+                console.log(err)
                 return res.status(404).send('File not found.');
             }
             res.sendFile(filePath);

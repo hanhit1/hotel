@@ -17,6 +17,6 @@ exports.createReservation = async (reservation) => {
         return newReservation;
     } catch (error) {
         console.error('Error creating reservation:', error);
-        return { message: 'Error creating reservation' };
+        throw error
     }
 }

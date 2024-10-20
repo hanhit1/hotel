@@ -1,4 +1,3 @@
-// hotelController.test.js
 const hotelController = require('../controllers/hotelController');
 const hotelService = require('../services/hotelService');
 const redisMock = require('redis-mock');

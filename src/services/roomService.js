@@ -4,7 +4,7 @@ exports.createRoom = async (room) => {
         return await Room.create(room);
     } catch (error) {
         console.error('Error creating room:', error);
-        return { message: 'Error creating room' };
+        throw error
     }
 }
 exports.approveRoom = async (roomId) => { 
@@ -13,6 +13,6 @@ exports.approveRoom = async (roomId) => {
     }
     catch (error) {
         console.error('Error approving room:', error);
-        return { message: 'Error approving room' };
+        throw error
     }
 }

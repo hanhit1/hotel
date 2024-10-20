@@ -23,7 +23,7 @@ exports.getUserWithRoleName = async (userId) => {
         }
     } catch (error) {
         console.error('Error fetching user or role:', error);
-        return { message: 'Error fetching user or role' };
+        throw error
     }
 };
 exports.getAdmin = async () => {
@@ -37,7 +37,7 @@ exports.getAdmin = async () => {
         }
     } catch (error) {
         console.error('Error fetching admin:', error);
-        return { message: 'Error fetching admin' };
+        throw error
     }
 }
 exports.updateAdmin = async (userId, user) => {
@@ -65,7 +65,7 @@ exports.deleteAdmin = async (userId) => {
             return { message: 'User is not an admin' };
         }
     } catch (error) {
-        return { message: 'Error deleting admin' };
+        throw error
     }
 }
 exports.getUserByEmail = async (email) => {
@@ -75,7 +75,7 @@ exports.getUserByEmail = async (email) => {
     }
     catch (error) {
         console.error('Error fetching user by email:', error);
-        return { message: 'Error fetching user by email' };
+        throw error
     }
 };
 exports.createUser = async (user) => {
@@ -85,6 +85,6 @@ exports.createUser = async (user) => {
     }
     catch (error) {
         console.error('Error creating user:', error);
-        return { message: 'Error creating user' };
+        throw error
     }
 }
