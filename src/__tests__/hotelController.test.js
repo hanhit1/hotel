@@ -3,9 +3,8 @@ const hotelService = require('../services/hotelService');
 const redisMock = require('redis-mock');
 const httpMocks = require('node-mocks-http');
 
-// Mock Redis client
 jest.mock('redis', () => redisMock);
-// Mock hotelService methods
+
 jest.mock('../services/hotelService');
 
 let req, res, next;
@@ -15,13 +14,27 @@ beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
     next = jest.fn();
-    mockRedisClient.flushall();  // Clear Redis cache before each test
+    mockRedisClient.flushall();  
 });
 
 describe('getAllHotel', () => {
     test('should return all hotels successfully', async () => {
-        // Mock hotelService.getAllHotel to return hotel data
-        const mockHotels = [{ id: 1, name: 'Hotel A' }, { id: 2, name: 'Hotel B' }];
+        const mockHotels = [
+            {
+                hotel_id: 1,
+                name: 'Hotel A',
+                address: '123 Street',
+                description: 'A luxury hotel',
+                user_id: 101
+            },
+            {
+                hotel_id: 2,
+                name: 'Hotel B',
+                address: '456 Avenue',
+                description: 'A budget-friendly hotel',
+                user_id: 102
+            }
+        ];
         hotelService.getAllHotel.mockResolvedValue(mockHotels);
 
         await hotelController.getAllHotel(req, res);
@@ -44,7 +57,13 @@ describe('getAllHotel', () => {
 
 describe('getHotelById', () => {
     test('should return cached hotel data', async () => {
-        const mockHotel = { id: 1, name: 'Hotel A' };
+        const mockHotel = {
+            hotel_id: 1,
+            name: 'Hotel A',
+            address: '123 Street',
+            description: 'A luxury hotel',
+            user_id: 101
+        };
         mockRedisClient.get = jest.fn().mockResolvedValue(JSON.stringify(mockHotel));
         req.params.id = '1';
 
@@ -53,10 +72,11 @@ describe('getHotelById', () => {
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockHotel);
         expect(mockRedisClient.get).toHaveBeenCalledWith('hotel:1');
+        expect(hotelService.getHotelById).not.toHaveBeenCalled(); 
     });
 
     test('should return hotel data from service when not cached', async () => {
-        const mockHotel = { id: 1, name: 'Hotel A' };
+        const mockHotel = { hotel_id: 1, name: 'Hotel A' };
         mockRedisClient.get = jest.fn().mockResolvedValue(null);
         hotelService.getHotelById.mockResolvedValue(mockHotel);
         req.params.id = '1';
@@ -94,7 +114,13 @@ describe('getHotelById', () => {
 
 describe('updateHotel', () => {
     test('should update hotel and refresh cache', async () => {
-        const updatedHotel = { id: 1, name: 'Updated Hotel' };
+        const updatedHotel = {
+            hotel_id: 1,
+            name: 'Hotel Modified',
+            address: '123 Street',
+            description: 'A luxury hotel',
+            user_id: 101
+        };
         hotelService.updateHotel.mockResolvedValue(updatedHotel);
         req.params.id = '1';
         req.body = updatedHotel;
@@ -110,7 +136,12 @@ describe('updateHotel', () => {
     test('should return 404 if hotel not found for update', async () => {
         hotelService.updateHotel.mockResolvedValue(null);
         req.params.id = '99';
-        req.body = { name: 'New Name' };
+        req.body = { 
+            name: 'Hotel New',
+            address: '123 Street',
+            description: 'A luxury hotel',
+            user_id: 101
+        };
 
         await hotelController.updateHotel(req, res);
 
@@ -132,7 +163,13 @@ describe('updateHotel', () => {
 
 describe('deleteHotel', () => {
     test('should delete hotel successfully', async () => {
-        const mockHotel = { id: 1, name: 'Hotel A' };
+        const mockHotel = {
+            hotel_id: 1,
+            name: 'Hotel A',
+            address: '123 Street',
+            description: 'A luxury hotel',
+            user_id: 101
+        };
         hotelService.deleteHotel.mockResolvedValue(mockHotel);
         req.params.id = '1';
 
@@ -140,6 +177,7 @@ describe('deleteHotel', () => {
 
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockHotel);
+        expect(mockRedisClient.del).toHaveBeenCalledWith('hotel:1'); 
     });
 
     test('should return 404 if hotel not found for deletion', async () => {

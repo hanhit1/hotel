@@ -1,4 +1,3 @@
-const e = require('express');
 const sendMail = require('../services/mailService');
 const userServices = require('../services/userService');
 exports.sendMail = async (req, res) => { 
