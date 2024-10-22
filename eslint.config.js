@@ -9,7 +9,7 @@ module.exports = {
         },
     },
     plugins: {
-        prettier: require('eslint-plugin-prettier'), // Cấu hình đúng plugin prettier
+        prettier: require('eslint-plugin-prettier'),
     },
     rules: {
         'prettier/prettier': 'error',
