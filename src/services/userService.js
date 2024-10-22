@@ -13,7 +13,7 @@ exports.getUserWithRoleName = async (userId) => {
                     phone: user.phone,
                     address: user.address,
                     email: user.email,
-                    role: role.role_name
+                    role: role.role_name,
                 };
             } else {
                 return { message: 'Role not found' };
@@ -23,7 +23,7 @@ exports.getUserWithRoleName = async (userId) => {
         }
     } catch (error) {
         console.error('Error fetching user or role:', error);
-        throw error
+        throw error;
     }
 };
 exports.getAdmin = async () => {
@@ -37,13 +37,13 @@ exports.getAdmin = async () => {
         }
     } catch (error) {
         console.error('Error fetching admin:', error);
-        throw error
+        throw error;
     }
-}
+};
 exports.updateAdmin = async (userId, user) => {
     try {
         const updated = await User.update(user, {
-            where: { user_id: userId }
+            where: { user_id: userId },
         });
         if (updated) {
             const updatedUser = await User.findOne({ where: { user_id: userId } });
@@ -52,9 +52,9 @@ exports.updateAdmin = async (userId, user) => {
         return { message: 'Admin not found' };
     } catch (error) {
         console.error('Error updating admin:', error);
-        throw error
+        throw error;
     }
-}
+};
 exports.deleteAdmin = async (userId) => {
     try {
         const adminToDelete = await User.findOne({ where: { user_id: userId } });
@@ -65,26 +65,24 @@ exports.deleteAdmin = async (userId) => {
             return { message: 'User is not an admin' };
         }
     } catch (error) {
-        throw error
+        throw error;
     }
-}
+};
 exports.getUserByEmail = async (email) => {
     try {
         const user = await User.findOne({ where: { email: email } });
         return user;
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error fetching user by email:', error);
-        throw error
+        throw error;
     }
 };
 exports.createUser = async (user) => {
     try {
         const newUser = await User.create(user);
         return newUser;
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error creating user:', error);
-        throw error
+        throw error;
     }
-}
+};

@@ -14,7 +14,7 @@ beforeEach(() => {
     req = httpMocks.createRequest();
     res = httpMocks.createResponse();
     next = jest.fn();
-    mockRedisClient.flushall();  
+    mockRedisClient.flushall();
 });
 
 describe('getAllHotel', () => {
@@ -25,20 +25,20 @@ describe('getAllHotel', () => {
                 name: 'Hotel A',
                 address: '123 Street',
                 description: 'A luxury hotel',
-                user_id: 101
+                user_id: 101,
             },
             {
                 hotel_id: 2,
                 name: 'Hotel B',
                 address: '456 Avenue',
                 description: 'A budget-friendly hotel',
-                user_id: 102
-            }
+                user_id: 102,
+            },
         ];
         hotelService.getAllHotel.mockResolvedValue(mockHotels);
 
         await hotelController.getAllHotel(req, res);
-        
+
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockHotels);
         expect(hotelService.getAllHotel).toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('getHotelById', () => {
             name: 'Hotel A',
             address: '123 Street',
             description: 'A luxury hotel',
-            user_id: 101
+            user_id: 101,
         };
         mockRedisClient.get = jest.fn().mockResolvedValue(JSON.stringify(mockHotel));
         req.params.id = '1';
@@ -72,7 +72,7 @@ describe('getHotelById', () => {
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockHotel);
         expect(mockRedisClient.get).toHaveBeenCalledWith('hotel:1');
-        expect(hotelService.getHotelById).not.toHaveBeenCalled(); 
+        expect(hotelService.getHotelById).not.toHaveBeenCalled();
     });
 
     test('should return hotel data from service when not cached', async () => {
@@ -86,7 +86,11 @@ describe('getHotelById', () => {
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockHotel);
         expect(hotelService.getHotelById).toHaveBeenCalledWith('1');
-        expect(mockRedisClient.setex).toHaveBeenCalledWith('hotel:1', 3600, JSON.stringify(mockHotel));
+        expect(mockRedisClient.setex).toHaveBeenCalledWith(
+            'hotel:1',
+            3600,
+            JSON.stringify(mockHotel),
+        );
     });
 
     test('should return 404 if hotel not found', async () => {
@@ -119,7 +123,7 @@ describe('updateHotel', () => {
             name: 'Hotel Modified',
             address: '123 Street',
             description: 'A luxury hotel',
-            user_id: 101
+            user_id: 101,
         };
         hotelService.updateHotel.mockResolvedValue(updatedHotel);
         req.params.id = '1';
@@ -130,17 +134,21 @@ describe('updateHotel', () => {
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(updatedHotel);
         expect(mockRedisClient.del).toHaveBeenCalledWith('hotel:1');
-        expect(mockRedisClient.setex).toHaveBeenCalledWith('hotel:1', 3600, JSON.stringify(updatedHotel));
+        expect(mockRedisClient.setex).toHaveBeenCalledWith(
+            'hotel:1',
+            3600,
+            JSON.stringify(updatedHotel),
+        );
     });
 
     test('should return 404 if hotel not found for update', async () => {
         hotelService.updateHotel.mockResolvedValue(null);
         req.params.id = '99';
-        req.body = { 
+        req.body = {
             name: 'Hotel New',
             address: '123 Street',
             description: 'A luxury hotel',
-            user_id: 101
+            user_id: 101,
         };
 
         await hotelController.updateHotel(req, res);
@@ -168,7 +176,7 @@ describe('deleteHotel', () => {
             name: 'Hotel A',
             address: '123 Street',
             description: 'A luxury hotel',
-            user_id: 101
+            user_id: 101,
         };
         hotelService.deleteHotel.mockResolvedValue(mockHotel);
         req.params.id = '1';
@@ -177,7 +185,7 @@ describe('deleteHotel', () => {
 
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockHotel);
-        expect(mockRedisClient.del).toHaveBeenCalledWith('hotel:1'); 
+        expect(mockRedisClient.del).toHaveBeenCalledWith('hotel:1');
     });
 
     test('should return 404 if hotel not found for deletion', async () => {

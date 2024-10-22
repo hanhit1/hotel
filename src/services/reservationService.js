@@ -3,11 +3,11 @@ const Room = require('../models/room');
 const User = require('../models/user');
 exports.createReservation = async (reservation) => {
     try {
-        const room = await Room.findByPk(reservation.room_id );
+        const room = await Room.findByPk(reservation.room_id);
         if (!room) {
             return { message: 'Room not found' };
         }
-        const user = await User.findByPk(reservation.user_id );
+        const user = await User.findByPk(reservation.user_id);
         if (!user) {
             return { message: 'User not found' };
         }
@@ -17,6 +17,6 @@ exports.createReservation = async (reservation) => {
         return newReservation;
     } catch (error) {
         console.error('Error creating reservation:', error);
-        throw error
+        throw error;
     }
-}
+};

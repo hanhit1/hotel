@@ -22,7 +22,7 @@ describe('createRoom', () => {
             floor: 3,
             status: 'available',
             price: 100,
-            hotel_id: 1
+            hotel_id: 1,
         };
 
         roomService.createRoom.mockResolvedValue(mockRoom);
@@ -33,9 +33,9 @@ describe('createRoom', () => {
             floor: 3,
             status: 'available',
             price: 100,
-            hotel_id: 1
+            hotel_id: 1,
         };
-        await roomController.createRoom(req, res);    
+        await roomController.createRoom(req, res);
         expect(res.statusCode).toBe(201);
         expect(res._getJSONData()).toEqual(mockRoom);
         expect(roomService.createRoom).toHaveBeenCalledWith(req.body);
@@ -50,11 +50,11 @@ describe('createRoom', () => {
             floor: 3,
             status: 'available',
             price: 100,
-            hotel_id: 1
+            hotel_id: 1,
         };
 
         await roomController.createRoom(req, res);
-        
+
         expect(res.statusCode).toBe(500);
         expect(res._getJSONData()).toEqual({ message: 'Error creating room' });
         expect(roomService.createRoom).toHaveBeenCalledWith(req.body);
@@ -71,14 +71,14 @@ describe('approveRoom', () => {
             floor: 3,
             status: 'available',
             price: 100,
-            hotel_id: 1
+            hotel_id: 1,
         };
 
         roomService.approveRoom.mockResolvedValue(mockRoom);
-        req.params.id = '1'; 
+        req.params.id = '1';
 
         await roomController.approveRoom(req, res);
-        
+
         expect(res.statusCode).toBe(200);
         expect(res._getJSONData()).toEqual(mockRoom);
         expect(roomService.approveRoom).toHaveBeenCalledWith('1');
@@ -88,7 +88,7 @@ describe('approveRoom', () => {
         roomService.approveRoom.mockRejectedValue(new Error('Failed to approve room'));
 
         await roomController.approveRoom(req, res);
-        
+
         expect(res.statusCode).toBe(500);
         expect(res._getJSONData()).toEqual({ message: 'Error approving room' });
         expect(roomService.approveRoom).toHaveBeenCalledWith('1');

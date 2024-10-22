@@ -3,7 +3,6 @@ const httpMocks = require('node-mocks-http');
 const fs = require('fs');
 const path = require('path');
 
-
 jest.mock('fs');
 jest.mock('path');
 
@@ -17,7 +16,7 @@ beforeEach(() => {
 
 describe('File Controller - uploadFile', () => {
     test('should return 400 if no file is uploaded', async () => {
-        req.file = undefined; 
+        req.file = undefined;
         await fileController.uploadFile(req, res);
 
         expect(res.statusCode).toBe(400);
@@ -25,17 +24,23 @@ describe('File Controller - uploadFile', () => {
     });
 
     test('should return 200 and file info if file is uploaded', async () => {
-        const mockFile = { filename: 'testfile.txt', mimetype: 'text/plain', size: 1234 };
-        req.file = mockFile; 
+        const mockFile = {
+            filename: 'testfile.txt',
+            mimetype: 'text/plain',
+            size: 1234,
+        };
+        req.file = mockFile;
 
         await fileController.uploadFile(req, res);
 
         expect(res.statusCode).toBe(200);
-        expect(res._getData()).toEqual(mockFile); 
+        expect(res._getData()).toEqual(mockFile);
     });
 
     test('should return 500 if an error occurs during upload', async () => {
-        jest.spyOn(res, 'send').mockImplementation(() => { throw new Error(); });
+        jest.spyOn(res, 'send').mockImplementation(() => {
+            throw new Error();
+        });
 
         await fileController.uploadFile(req, res);
 
@@ -50,7 +55,7 @@ describe('File Controller - getFile', () => {
         const filePath = path.join(__dirname, '../public/', req.params.file_name);
 
         fs.access.mockImplementation((path, flags, callback) => {
-            callback(new Error('File not found')); 
+            callback(new Error('File not found'));
         });
 
         await fileController.getFile(req, res);
@@ -64,10 +69,10 @@ describe('File Controller - getFile', () => {
         const filePath = path.join(__dirname, '../public/', req.params.file_name);
 
         fs.access.mockImplementation((path, flags, callback) => {
-            callback(null); 
+            callback(null);
         });
 
-        res.sendFile = jest.fn(); 
+        res.sendFile = jest.fn();
         await fileController.getFile(req, res);
 
         expect(fs.access).toHaveBeenCalledWith(filePath, fs.constants.F_OK, expect.any(Function));

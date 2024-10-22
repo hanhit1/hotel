@@ -1,7 +1,7 @@
 {
-	"error": {
-		"not_found": "Resource not found.",
-		"invalid_input": "Invalid input provided.",
-		"unauthorized": "Unauthorized access."
-	}
+    "error": {
+        "not_found": "Resource not found.",
+        "invalid_input": "Invalid input provided.",
+        "unauthorized": "Unauthorized access."
+    }
 }

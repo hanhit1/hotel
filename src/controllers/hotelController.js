@@ -12,11 +12,10 @@ exports.getAllHotel = async (req, res) => {
 exports.getHotelById = async (req, res) => {
     try {
         const hotel_id = req.params.id;
-        const cacheData = client.get(`hotel:${hotel_id}`)
+        const cacheData = client.get(`hotel:${hotel_id}`);
         if (cacheData) {
             return res.json(JSON.parse(cacheData));
-        }
-        else {
+        } else {
             const hotel = await hotelService.getHotelById();
             if (hotel) {
                 client.setex(`hotel:${hotel_id}`, 3600, JSON.stringify(hotelData));

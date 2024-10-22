@@ -7,4 +7,4 @@ exports.createReservation = async (req, res) => {
         console.error('Error creating reservation:', error);
         res.status(500).json({ message: 'Error creating reservation' });
     }
-}
+};

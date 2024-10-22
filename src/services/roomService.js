@@ -4,15 +4,14 @@ exports.createRoom = async (room) => {
         return await Room.create(room);
     } catch (error) {
         console.error('Error creating room:', error);
-        throw error
+        throw error;
     }
-}
-exports.approveRoom = async (roomId) => { 
+};
+exports.approveRoom = async (roomId) => {
     try {
         return await Room.update({ room_id: roomId }, { status: 'approved' });
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error approving room:', error);
-        throw error
+        throw error;
     }
-}
+};

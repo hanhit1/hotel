@@ -14,46 +14,50 @@ beforeEach(() => {
 
 describe('createReservation', () => {
     test('should create a reservation successfully', async () => {
-        const mockReservation = { 
-            reservation_id: 1, 
-            checkin_date: new Date('2024-01-01'), 
-            checkout_date: new Date('2024-01-10'), 
-            user_id: 1, 
-            room_id: 1, 
-            status: 'confirmed' 
+        const mockReservation = {
+            reservation_id: 1,
+            checkin_date: new Date('2024-01-01'),
+            checkout_date: new Date('2024-01-10'),
+            user_id: 1,
+            room_id: 1,
+            status: 'confirmed',
         };
-        
+
         reservationService.createReservation.mockResolvedValue(mockReservation);
 
-        req.body = { 
-            checkin_date: new Date('2024-01-01'), 
-            checkout_date: new Date('2024-01-10'), 
-            user_id: 1, 
-            room_id: 1, 
-            status: 'confirmed' 
+        req.body = {
+            checkin_date: new Date('2024-01-01'),
+            checkout_date: new Date('2024-01-10'),
+            user_id: 1,
+            room_id: 1,
+            status: 'confirmed',
         };
 
         await reservationController.createReservation(req, res);
-        
+
         expect(res.statusCode).toBe(201);
         expect(res._getJSONData()).toEqual(mockReservation);
-        expect(reservationService.createReservation).toHaveBeenCalledWith(req.body); 
+        expect(reservationService.createReservation).toHaveBeenCalledWith(req.body);
     });
 
     test('should handle error when failing to create reservation', async () => {
-        reservationService.createReservation.mockRejectedValue(new Error('Failed to create reservation'));
-        req.body = { 
-            checkin_date: new Date('2024-01-01'), 
-            checkout_date: new Date('2024-01-10'), 
-            user_id: 1, 
-            room_id: 1, 
-            status: 'confirmed' 
+        reservationService.createReservation.mockRejectedValue(
+            new Error('Failed to create reservation'),
+        );
+        req.body = {
+            checkin_date: new Date('2024-01-01'),
+            checkout_date: new Date('2024-01-10'),
+            user_id: 1,
+            room_id: 1,
+            status: 'confirmed',
         };
 
         await reservationController.createReservation(req, res);
-        
+
         expect(res.statusCode).toBe(500);
-        expect(res._getJSONData()).toEqual({ message: 'Error creating reservation' });
+        expect(res._getJSONData()).toEqual({
+            message: 'Error creating reservation',
+        });
         expect(reservationService.createReservation).toHaveBeenCalledWith(req.body); // Kiểm tra xem phương thức được gọi đúng với dữ liệu
     });
 });

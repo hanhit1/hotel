@@ -4,12 +4,12 @@ const Role = sequelize.define('roles', {
     role_id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
     role_name: {
         type: Sequelize.STRING,
-        allowNull: false
-    }
+        allowNull: false,
+    },
 });
 Role.sync();
 module.exports = Role;

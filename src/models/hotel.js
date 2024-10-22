@@ -4,25 +4,24 @@ const Hotel = sequelize.define('hotels', {
     hotel_id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
     name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
     address: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
     description: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
     user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
-    }
-    
+        allowNull: false,
+    },
 });
 Hotel.sync();
 module.exports = Hotel;

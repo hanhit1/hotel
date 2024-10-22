@@ -10,14 +10,14 @@ const generateEmailTemplate = (name) => {
         <footer>Chào mừng bạn đến với Gooup1</footer>
     `;
 };
-const sendMail = (to, subject, name) => { 
+const sendMail = (to, subject, name) => {
     const mailOptions = {
         from: process.env.EMAIL,
         to: to,
         subject: subject,
-        html: generateEmailTemplate(name)
-    }
-    
+        html: generateEmailTemplate(name),
+    };
+
     return transporter.sendMail(mailOptions);
-}
+};
 module.exports = sendMail;
